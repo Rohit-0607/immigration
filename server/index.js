@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 5000
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:5173'],
+  origin: true,
   credentials: true,
 }))
 app.use(express.json())
@@ -37,6 +37,10 @@ app.get('*', (req, res) => {
   }
 })
 
-app.listen(PORT, () => {
-  console.log(`🚀 Future Point API server running on http://localhost:${PORT}`)
-})
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`🚀 Future Point API server running on http://localhost:${PORT}`)
+  })
+}
+
+export default app;
