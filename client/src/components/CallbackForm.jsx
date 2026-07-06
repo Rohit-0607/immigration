@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import useScrollReveal from '../hooks/useScrollReveal'
 
 export default function CallbackForm() {
@@ -8,11 +8,22 @@ export default function CallbackForm() {
     phone: '',
     email: '',
     city: '',
+    country: '',
     service: '',
     message: '',
   })
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [countriesList, setCountriesList] = useState([])
+
+  useEffect(() => {
+    fetch('/api/countries')
+      .then(res => res.json())
+      .then(data => {
+        setCountriesList(data.map(c => c.name).sort())
+      })
+      .catch(console.error)
+  }, [])
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -29,14 +40,16 @@ export default function CallbackForm() {
         body: JSON.stringify(formData),
       })
 
-      if (res.ok) {
-        setSubmitted(true)
-        setFormData({ name: '', phone: '', email: '', city: '', service: '', message: '' })
+      if (!res.ok) {
+        const errorData = await res.json()
+        throw new Error(errorData.error || 'Failed to submit form')
       }
-    } catch (err) {
-      // If backend isn't running, still show success for demo
+
       setSubmitted(true)
-      setFormData({ name: '', phone: '', email: '', city: '', service: '', message: '' })
+      setFormData({ name: '', phone: '', email: '', city: '', country: '', service: '', message: '' })
+    } catch (err) {
+      console.error("Submission error:", err)
+      alert("Something went wrong: " + err.message)
     } finally {
       setLoading(false)
       setTimeout(() => setSubmitted(false), 5000)
@@ -153,17 +166,27 @@ export default function CallbackForm() {
                   </div>
                 </div>
 
-                <div className="form-group">
-                  <select name="service" value={formData.service} onChange={handleChange} required>
-                    <option value="">Select Service *</option>
-                    <option value="study-visa">Study Visa</option>
-                    <option value="pr">Permanent Residency</option>
-                    <option value="work-permit">Work Permit</option>
-                    <option value="tourist-visa">Tourist Visa</option>
-                    <option value="business-visa">Business Visa</option>
-                    <option value="spouse-visa">Spouse / Family Visa</option>
-                    <option value="other">Other</option>
-                  </select>
+                <div className="form-row">
+                  <div className="form-group">
+                    <select name="country" value={formData.country} onChange={handleChange} required>
+                      <option value="">Select Target Country *</option>
+                      {countriesList.map((c, idx) => (
+                        <option key={idx} value={c}>{c}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <select name="service" value={formData.service} onChange={handleChange} required>
+                      <option value="">Select Service *</option>
+                      <option value="study-visa">Study Visa</option>
+                      <option value="pr">Permanent Residency</option>
+                      <option value="work-permit">Work Permit</option>
+                      <option value="tourist-visa">Tourist Visa</option>
+                      <option value="business-visa">Business Visa</option>
+                      <option value="spouse-visa">Spouse / Family Visa</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
                 </div>
 
                 <div className="form-group">

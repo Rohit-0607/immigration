@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { CheckCircle2, AlertCircle } from 'lucide-react'
 
 export default function ContactForm() {
@@ -6,10 +6,22 @@ export default function ContactForm() {
     name: '',
     email: '',
     phone: '',
+    country: '',
     service: '',
     message: ''
   })
   const [status, setStatus] = useState('idle') // idle, submitting, success, error
+  const [errorMessage, setErrorMessage] = useState('')
+  const [countriesList, setCountriesList] = useState([])
+
+  useEffect(() => {
+    fetch('/api/countries')
+      .then(res => res.json())
+      .then(data => {
+        setCountriesList(data.map(c => c.name).sort())
+      })
+      .catch(console.error)
+  }, [])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -21,26 +33,32 @@ export default function ContactForm() {
     setStatus('submitting')
     
     try {
-      // Connect to the MongoDB Express Backend
-      const response = await fetch('http://localhost:5000/api/contact', {
+      const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
-          subject: formData.service || 'General Inquiry', // Mapped to subject
-          message: `Phone: ${formData.phone}\nService: ${formData.service}\n\n${formData.message}`
-        })
+          phone: formData.phone,
+          country: formData.country,
+          service: formData.service || 'General Inquiry',
+          subject: 'New Consultation Request',
+          message: formData.message
+        }),
       })
 
-      if (!response.ok) throw new Error('Failed to submit')
+      if (!res.ok) {
+        const errorData = await res.json()
+        throw new Error(errorData.error || 'Failed to submit form')
+      }
       
       setStatus('success')
-      setFormData({ name: '', email: '', phone: '', service: '', message: '' })
+      setFormData({ name: '', email: '', phone: '', country: '', service: '', message: '' })
       
       setTimeout(() => setStatus('idle'), 5000)
     } catch (err) {
-      console.error(err)
+      console.error("Submission error:", err)
+      setErrorMessage(err.message || 'An unknown error occurred.')
       setStatus('error')
     }
   }
@@ -61,9 +79,10 @@ export default function ContactForm() {
       {status === 'error' && (
         <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
           <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 shrink-0" />
-          <p className="text-sm text-red-800">
-            <strong>Something went wrong.</strong> Please try again later or contact us directly via phone.
-          </p>
+          <div className="text-sm text-red-800">
+            <strong>Something went wrong.</strong>
+            <p className="mt-1">{errorMessage}</p>
+          </div>
         </div>
       )}
 
@@ -109,6 +128,22 @@ export default function ContactForm() {
             className="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-shadow"
             placeholder="john@example.com"
           />
+        </div>
+
+        <div>
+          <label htmlFor="country" className="block text-sm font-medium text-slate-700 mb-1">Target Country</label>
+          <select
+            id="country"
+            name="country"
+            value={formData.country}
+            onChange={handleChange}
+            className="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-shadow bg-white"
+          >
+            <option value="">Select a country...</option>
+            {countriesList.map((c, idx) => (
+              <option key={idx} value={c}>{c}</option>
+            ))}
+          </select>
         </div>
 
         <div>

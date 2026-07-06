@@ -5,7 +5,8 @@ const countrySchema = new mongoose.Schema({
   name: { type: String, required: true },
   desc: { type: String, required: true },
   image: { type: String, required: true },
-  order: { type: Number, default: 0 }
+  order: { type: Number, default: 0 },
+  featured: { type: Boolean, default: false }
 }, { timestamps: true })
 
 export default mongoose.model('Country', countrySchema)

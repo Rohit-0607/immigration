@@ -67,21 +67,43 @@ export default function EligibilityChecker() {
   const [answers, setAnswers] = useState({})
   const [showResult, setShowResult] = useState(false)
   const [analyzing, setAnalyzing] = useState(false)
+  const [countries, setCountries] = useState([])
+
+  useEffect(() => {
+    fetch('/api/countries')
+      .then(res => res.json())
+      .then(data => {
+        setCountries(data.map(c => c.name).sort())
+      })
+      .catch(console.error)
+  }, [])
 
   const handleSelect = (option) => {
     setAnswers(prev => ({ ...prev, [questions[currentStep].id]: option }))
   }
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentStep < questions.length - 1) {
       setCurrentStep(prev => prev + 1)
     } else {
-      // Simulate analyzing
       setAnalyzing(true)
-      setTimeout(() => {
-        setAnalyzing(false)
-        setShowResult(true)
-      }, 2000)
+      try {
+        const res = await fetch('/api/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ answers })
+        })
+        if (!res.ok) {
+          throw new Error('Failed to save lead')
+        }
+      } catch (error) {
+        console.error("Failed to save lead:", error)
+      } finally {
+        setTimeout(() => {
+          setAnalyzing(false)
+          setShowResult(true)
+        }, 1500)
+      }
     }
   }
 
@@ -205,19 +227,32 @@ export default function EligibilityChecker() {
               </h2>
 
               <div className="space-y-3">
-                {currentQ.options.map((option, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => handleSelect(option)}
-                    className={`w-full text-left px-6 py-4 rounded-xl border-2 transition-all duration-200 ${
-                      answers[currentQ.id] === option 
-                        ? 'border-primary-600 bg-primary-50 text-primary-900 font-medium shadow-sm' 
-                        : 'border-slate-200 text-slate-700 hover:border-primary-300 hover:bg-slate-50'
-                    }`}
+                {currentQ.id === 'country' ? (
+                  <select
+                    value={answers[currentQ.id] || ''}
+                    onChange={(e) => handleSelect(e.target.value)}
+                    className="w-full px-6 py-4 rounded-xl border-2 border-slate-200 text-slate-700 focus:border-primary-600 focus:bg-primary-50 focus:text-primary-900 outline-none transition-all duration-200 bg-white"
                   >
-                    {option}
-                  </button>
-                ))}
+                    <option value="" disabled>Select a country...</option>
+                    {countries.map((country, idx) => (
+                      <option key={idx} value={country}>{country}</option>
+                    ))}
+                  </select>
+                ) : (
+                  currentQ.options.map((option, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => handleSelect(option)}
+                      className={`w-full text-left px-6 py-4 rounded-xl border-2 transition-all duration-200 ${
+                        answers[currentQ.id] === option 
+                          ? 'border-primary-600 bg-primary-50 text-primary-900 font-medium shadow-sm' 
+                          : 'border-slate-200 text-slate-700 hover:border-primary-300 hover:bg-slate-50'
+                      }`}
+                    >
+                      {option}
+                    </button>
+                  ))
+                )}
               </div>
 
               {/* Navigation */}

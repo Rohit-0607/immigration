@@ -1,0 +1,26 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function to check if user is an authenticated admin
+    function isAdmin() {
+      return request.auth != null;
+    }
+
+    // Consultations Collection Rules
+    match /consultations/{document} {
+      // Anyone can create (submit form)
+      allow create: if true;
+      // Only authenticated admins can read, update, or delete
+      allow read, update, delete: if isAdmin();
+    }
+
+    // Eligibility Leads Collection Rules
+    match /eligibilityLeads/{document} {
+      // Anyone can create (submit quiz)
+      allow create: if true;
+      // Only authenticated admins can read, update, or delete
+      allow read, update, delete: if isAdmin();
+    }
+  }
+}
