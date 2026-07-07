@@ -1,5 +1,6 @@
 import { useParams, Link } from 'react-router-dom'
 import { Calendar, User, ArrowLeft } from 'lucide-react'
+import { Helmet } from 'react-helmet-async'
 import { blogPosts } from './Blog'
 
 export default function BlogPost() {
@@ -17,6 +18,15 @@ export default function BlogPost() {
   }
 
   return (
+    <>
+    <Helmet>
+      <title>{post.title} | Future Point Immigration</title>
+      <meta name="description" content={post.excerpt} />
+      <meta property="og:title" content={`${post.title} | Future Point Immigration`} />
+      <meta property="og:description" content={post.excerpt} />
+      <meta property="og:type" content="article" />
+      <meta property="og:image" content={post.image || "https://futurepoint.com/og-image.jpg"} />
+    </Helmet>
     <article className="bg-white py-16 md:py-24">
       <div className="container-custom">
         <div className="max-w-4xl mx-auto">
@@ -70,5 +80,6 @@ export default function BlogPost() {
         </div>
       </div>
     </article>
+    </>
   )
 }

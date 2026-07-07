@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://futurepoint.com/sitemap.xml

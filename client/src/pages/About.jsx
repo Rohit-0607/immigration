@@ -1,8 +1,18 @@
 import { Users, Target, Shield, Award } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 
 export default function About() {
   return (
+    <>
+    <Helmet>
+      <title>About Us | Future Point Immigration</title>
+      <meta name="description" content="Learn about Future Point Immigration, a premier consultancy with 15+ years of experience in helping clients achieve their global aspirations." />
+      <meta property="og:title" content="About Us | Future Point Immigration" />
+      <meta property="og:description" content="Learn about Future Point Immigration, a premier consultancy with 15+ years of experience in helping clients achieve their global aspirations." />
+      <meta property="og:type" content="website" />
+      <meta property="og:image" content="https://futurepoint.com/og-image.jpg" />
+    </Helmet>
     <div className="bg-white">
       {/* Hero Section */}
       <section className="bg-slate-50 py-16 md:py-24">
@@ -91,5 +101,6 @@ export default function About() {
         </div>
       </section>
     </div>
+    </>
   )
 }

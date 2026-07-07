@@ -8,7 +8,8 @@ export default function ContactForm() {
     phone: '',
     country: '',
     service: '',
-    message: ''
+    message: '',
+    _website: ''
   })
   const [status, setStatus] = useState('idle') // idle, submitting, success, error
   const [errorMessage, setErrorMessage] = useState('')
@@ -43,7 +44,8 @@ export default function ContactForm() {
           country: formData.country,
           service: formData.service || 'General Inquiry',
           subject: 'New Consultation Request',
-          message: formData.message
+          message: formData.message,
+          _website: formData._website
         }),
       })
 
@@ -53,7 +55,7 @@ export default function ContactForm() {
       }
       
       setStatus('success')
-      setFormData({ name: '', email: '', phone: '', country: '', service: '', message: '' })
+      setFormData({ name: '', email: '', phone: '', country: '', service: '', message: '', _website: '' })
       
       setTimeout(() => setStatus('idle'), 5000)
     } catch (err) {
@@ -87,6 +89,11 @@ export default function ContactForm() {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-5">
+        {/* Honeypot field - visually hidden to catch bots */}
+        <div style={{ position: 'absolute', left: '-5000px' }} aria-hidden="true">
+          <input type="text" name="_website" tabIndex="-1" value={formData._website} onChange={handleChange} autoComplete="off" />
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1">Full Name *</label>

@@ -1,8 +1,18 @@
 import { Mail, MapPin, Phone } from 'lucide-react'
+import { Helmet } from 'react-helmet-async'
 import ContactForm from '../components/ContactForm'
 
 export default function Contact() {
   return (
+    <>
+    <Helmet>
+      <title>Contact Us | Future Point Immigration</title>
+      <meta name="description" content="Get in touch with Future Point Immigration for a free consultation." />
+      <meta property="og:title" content="Contact Us | Future Point Immigration" />
+      <meta property="og:description" content="Get in touch with Future Point Immigration for a free consultation." />
+      <meta property="og:type" content="website" />
+      <meta property="og:image" content="https://futurepoint.com/og-image.jpg" />
+    </Helmet>
     <div className="bg-slate-50 min-h-screen pb-20">
       {/* Header */}
       <div className="bg-primary-950 text-white py-16 md:py-24">
@@ -26,8 +36,9 @@ export default function Contact() {
               <div>
                 <h3 className="font-bold text-slate-900 mb-1 text-lg">Visit Our Office</h3>
                 <p className="text-slate-600 leading-relaxed">
-                  123 Baragaon <br />
-                  Karnal, 132023<br />
+                  Near Bus Stand,Kaithal
+                  Kaithal-136027 <br />
+                  Haryana<br />
                   India
                 </p>
               </div>
@@ -89,5 +100,6 @@ export default function Contact() {
         </div>
       </div>
     </div>
+    </>
   )
 }

@@ -1,12 +1,16 @@
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, Users, UserCheck, LogOut } from 'lucide-react'
+import { LayoutDashboard, Users, UserCheck, LogOut, Calculator, FolderLock } from 'lucide-react'
 
 export default function AdminLayout() {
   const { pathname } = useLocation()
   const navigate = useNavigate()
 
   const handleLogout = async () => {
-    localStorage.removeItem('adminToken')
+    try {
+      await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' })
+    } catch(err) {
+      console.error('Logout error', err)
+    }
     navigate('/admin/login')
   }
 
@@ -14,6 +18,8 @@ export default function AdminLayout() {
     { name: 'Dashboard', path: '/admin/dashboard', icon: LayoutDashboard },
     { name: 'Consultations', path: '/admin/consultations', icon: Users },
     { name: 'Eligibility Leads', path: '/admin/leads', icon: UserCheck },
+    { name: 'Points Leads', path: '/admin/points-leads', icon: Calculator },
+    { name: 'Client Management', path: '/admin/clients', icon: FolderLock },
   ]
 
   return (

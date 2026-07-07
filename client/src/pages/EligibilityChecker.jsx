@@ -1,6 +1,18 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { CheckCircle2, ArrowRight, ArrowLeft } from 'lucide-react'
+import { Helmet } from 'react-helmet-async'
+
+const helmetBlock = (
+  <Helmet>
+    <title>Eligibility Checker | Future Point Immigration</title>
+    <meta name="description" content="Check your eligibility for various immigration programs with our free online tool." />
+    <meta property="og:title" content="Eligibility Checker | Future Point Immigration" />
+    <meta property="og:description" content="Check your eligibility for various immigration programs with our free online tool." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://futurepoint.com/og-image.jpg" />
+  </Helmet>
+)
 
 const questions = [
   {
@@ -65,6 +77,7 @@ const questions = [
 export default function EligibilityChecker() {
   const [currentStep, setCurrentStep] = useState(0)
   const [answers, setAnswers] = useState({})
+  const [_website, setWebsite] = useState('')
   const [showResult, setShowResult] = useState(false)
   const [analyzing, setAnalyzing] = useState(false)
   const [countries, setCountries] = useState([])
@@ -91,7 +104,7 @@ export default function EligibilityChecker() {
         const res = await fetch('/api/leads', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ answers })
+          body: JSON.stringify({ answers, _website })
         })
         if (!res.ok) {
           throw new Error('Failed to save lead')
@@ -116,6 +129,7 @@ export default function EligibilityChecker() {
   const reset = () => {
     setCurrentStep(0)
     setAnswers({})
+    setWebsite('')
     setShowResult(false)
   }
 
@@ -147,17 +161,22 @@ export default function EligibilityChecker() {
 
   if (analyzing) {
     return (
+      <>
+      {helmetBlock}
       <div className="container-custom py-24 min-h-[60vh] flex flex-col items-center justify-center">
         <i className="lucide-loader animate-spin w-16 h-16 text-primary-600 mb-6 border-4 border-primary-100 border-t-primary-600 rounded-full" />
         <h2 className="text-2xl font-bold text-slate-900 mb-2">Analyzing Your Profile...</h2>
         <p className="text-slate-600">Cross-referencing your answers with global immigration policies.</p>
       </div>
+      </>
     )
   }
 
   if (showResult) {
     const result = getResult()
     return (
+      <>
+      {helmetBlock}
       <div className="container-custom py-20 min-h-[60vh]">
         <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl border border-slate-100 p-8 md:p-12 text-center">
           <div className="w-24 h-24 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -190,6 +209,7 @@ export default function EligibilityChecker() {
           </div>
         </div>
       </div>
+      </>
     )
   }
 
@@ -197,6 +217,8 @@ export default function EligibilityChecker() {
   const hasAnswered = !!answers[currentQ.id]
 
   return (
+    <>
+    {helmetBlock}
     <div className="bg-slate-50 py-20 min-h-[70vh]">
       <div className="container-custom">
         <div className="max-w-3xl mx-auto">
@@ -210,6 +232,11 @@ export default function EligibilityChecker() {
 
           {/* Quiz Container */}
           <div className="bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden">
+            {/* Honeypot field - visually hidden to catch bots */}
+            <div style={{ position: 'absolute', left: '-5000px' }} aria-hidden="true">
+              <input type="text" name="_website" tabIndex="-1" value={_website} onChange={(e) => setWebsite(e.target.value)} autoComplete="off" />
+            </div>
+
             {/* Progress Bar */}
             <div className="bg-slate-100 h-2 w-full">
               <div 
@@ -278,5 +305,6 @@ export default function EligibilityChecker() {
         </div>
       </div>
     </div>
+    </>
   )
 }

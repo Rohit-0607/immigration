@@ -75,8 +75,9 @@ export default function Footer() {
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-gold shrink-0 mt-0.5" />
                 <span className="text-sm leading-relaxed">
-                  123 baragaon<br />
-                  Karnal,132001<br />
+                  Near Bus Stand, Kaithal
+                  Kaithal-136027<br />
+                  Haryana<br />
                   India
                 </span>
               </li>

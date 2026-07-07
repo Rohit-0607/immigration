@@ -11,6 +11,7 @@ export default function CallbackForm() {
     country: '',
     service: '',
     message: '',
+    _website: '',
   })
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -46,7 +47,7 @@ export default function CallbackForm() {
       }
 
       setSubmitted(true)
-      setFormData({ name: '', phone: '', email: '', city: '', country: '', service: '', message: '' })
+      setFormData({ name: '', phone: '', email: '', city: '', country: '', service: '', message: '', _website: '' })
     } catch (err) {
       console.error("Submission error:", err)
       alert("Something went wrong: " + err.message)
@@ -121,6 +122,10 @@ export default function CallbackForm() {
               </div>
             ) : (
               <form className="callback-form" onSubmit={handleSubmit}>
+                {/* Honeypot field - visually hidden to catch bots */}
+                <div style={{ position: 'absolute', left: '-5000px' }} aria-hidden="true">
+                  <input type="text" name="_website" tabIndex="-1" value={formData._website} onChange={handleChange} autoComplete="off" />
+                </div>
                 <div className="form-row">
                   <div className="form-group">
                     <input

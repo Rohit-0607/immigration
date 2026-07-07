@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Calendar, User, ArrowRight } from 'lucide-react'
+import { Helmet } from 'react-helmet-async'
 
 // Mock Data for Blogs
 export const blogPosts = [
@@ -16,12 +17,12 @@ export const blogPosts = [
   {
     id: 2,
     slug: 'australia-student-visa-changes',
-    title: 'New Financial Requirements for Australian Student Visas',
-    excerpt: 'The Australian government has increased the proof of funds required for international students. Here is what you need to know.',
-    image: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=600&h=400&fit=crop',
+    title: 'Major Changes to Australia Student Visas',
+    excerpt: 'The Genuine Student (GS) requirement replaces the GTE. Heres what you need to know before applying.',
+    image: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=600&h=400&fit=crop',
     date: 'June 28, 2026',
-    author: 'Study Abroad Expert',
-    content: 'Studying in Australia remains highly popular, but recent policy shifts mean prospective students must show stronger financial backing. The new minimum savings threshold ensures students can comfortably support themselves without relying entirely on part-time work...'
+    author: 'Study Abroad Team',
+    content: 'The Australian Department of Home Affairs has officially replaced the Genuine Temporary Entrant (GTE) requirement with the Genuine Student (GS) requirement. This change aims to provide clearer pathways for students who genuinely intend to study and contribute to the Australian economy...'
   },
   {
     id: 3,
@@ -37,6 +38,15 @@ export const blogPosts = [
 
 export default function Blog() {
   return (
+    <>
+    <Helmet>
+      <title>Immigration Blog | Future Point Immigration</title>
+      <meta name="description" content="Stay updated with the latest visa policies, immigration news, and expert tips to help you succeed in your global journey." />
+      <meta property="og:title" content="Immigration Blog | Future Point Immigration" />
+      <meta property="og:description" content="Stay updated with the latest visa policies, immigration news, and expert tips to help you succeed in your global journey." />
+      <meta property="og:type" content="website" />
+      <meta property="og:image" content="https://futurepoint.com/og-image.jpg" />
+    </Helmet>
     <div className="bg-slate-50 py-16 md:py-24 min-h-screen">
       <div className="container-custom">
         <div className="text-center max-w-3xl mx-auto mb-16">
@@ -74,5 +84,6 @@ export default function Blog() {
         </div>
       </div>
     </div>
+    </>
   )
 }

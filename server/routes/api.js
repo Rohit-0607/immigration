@@ -10,7 +10,10 @@ import Stat from '../models/Stat.js'
 import Feature from '../models/Feature.js'
 import Admin from '../models/Admin.js'
 import EligibilityLead from '../models/EligibilityLead.js'
+import PointsLead from '../models/PointsLead.js'
+import Client from '../models/Client.js'
 import { protect } from '../middleware/auth.js'
+import { apiLimiter, honeypot } from '../middleware/security.js'
 
 const router = Router()
 
@@ -67,7 +70,7 @@ router.get('/features', async (req, res) => {
 // FORM SUBMISSION POST ROUTES
 // ==========================================
 
-router.post('/callback', async (req, res) => {
+router.post('/callback', apiLimiter, honeypot, async (req, res) => {
   try {
     const { name, phone, email, city, service, message } = req.body
 
@@ -89,7 +92,7 @@ router.post('/callback', async (req, res) => {
   }
 })
 
-router.post('/contact', async (req, res) => {
+router.post('/contact', apiLimiter, honeypot, async (req, res) => {
   try {
     const { name, email, phone, service, subject, message } = req.body
 
@@ -111,7 +114,7 @@ router.post('/contact', async (req, res) => {
   }
 })
 
-router.post('/newsletter', async (req, res) => {
+router.post('/newsletter', apiLimiter, honeypot, async (req, res) => {
   try {
     const { email } = req.body
 
@@ -139,15 +142,24 @@ router.post('/newsletter', async (req, res) => {
 // AUTH & ADMIN ROUTES
 // ==========================================
 
-router.post('/auth/login', async (req, res) => {
+router.post('/auth/login', apiLimiter, async (req, res) => {
   const { email, password } = req.body
   try {
     const admin = await Admin.findOne({ email })
     if (admin && (await admin.matchPassword(password))) {
-      const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET || 'fallback_secret', {
+      const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET, {
         expiresIn: '30d'
       })
-      res.json({ token, email: admin.email })
+      
+      // Set token as HTTP-only cookie
+      res.cookie('adminToken', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'Strict',
+        maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+      })
+      
+      res.json({ email: admin.email })
     } else {
       res.status(401).json({ error: 'Invalid email or password' })
     }
@@ -156,13 +168,35 @@ router.post('/auth/login', async (req, res) => {
   }
 })
 
+router.get('/auth/me', protect, (req, res) => {
+  res.json({ email: req.admin.email })
+})
+
+router.post('/auth/logout', (req, res) => {
+  res.clearCookie('adminToken')
+  res.json({ success: true })
+})
+
 // ==========================================
 // ELIGIBILITY LEADS ROUTES
 // ==========================================
 
-router.post('/leads', async (req, res) => {
+router.post('/leads', apiLimiter, honeypot, async (req, res) => {
   try {
-    const lead = await EligibilityLead.create(req.body)
+    const { answers } = req.body
+    
+    // Explicit field extraction to prevent mass-assignment
+    const safeData = {
+      answers: {
+        goal: answers?.goal,
+        country: answers?.country,
+        education: answers?.education,
+        experience: answers?.experience,
+        english: answers?.english
+      }
+    }
+    
+    const lead = await EligibilityLead.create(safeData)
     res.status(201).json(lead)
   } catch (err) {
     res.status(500).json({ error: 'Server error' })
@@ -181,6 +215,50 @@ router.get('/leads', protect, async (req, res) => {
 router.put('/leads/:id/status', protect, async (req, res) => {
   try {
     const lead = await EligibilityLead.findByIdAndUpdate(req.params.id, { status: req.body.status }, { new: true })
+    res.json(lead)
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' })
+  }
+})
+
+// Points Calculator Leads
+router.post('/points-leads', apiLimiter, honeypot, async (req, res) => {
+  try {
+    const { answers, estimatedScore } = req.body
+    
+    // Explicit field extraction to prevent mass-assignment
+    const safeData = {
+      answers: {
+        age: answers?.age,
+        education: answers?.education,
+        languageFirst: answers?.languageFirst,
+        languageSecond: answers?.languageSecond,
+        cadExperience: answers?.cadExperience,
+        foreignExperience: answers?.foreignExperience,
+        spouse: answers?.spouse
+      },
+      estimatedScore: typeof estimatedScore === 'number' ? estimatedScore : null
+    }
+    
+    const lead = await PointsLead.create(safeData)
+    res.status(201).json(lead)
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' })
+  }
+})
+
+router.get('/points-leads', protect, async (req, res) => {
+  try {
+    const leads = await PointsLead.find().sort({ createdAt: -1 })
+    res.json(leads)
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' })
+  }
+})
+
+router.put('/points-leads/:id/status', protect, async (req, res) => {
+  try {
+    const lead = await PointsLead.findByIdAndUpdate(req.params.id, { status: req.body.status }, { new: true })
     res.json(lead)
   } catch (err) {
     res.status(500).json({ error: 'Server error' })
@@ -218,6 +296,63 @@ router.put('/consultations/:type/:id/status', protect, async (req, res) => {
       await Callback.findByIdAndUpdate(id, { status })
     }
     res.json({ success: true })
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' })
+  }
+})
+
+// ==========================================
+// ADMIN CLIENT MANAGEMENT ROUTES
+// ==========================================
+
+router.get('/admin/clients', protect, async (req, res) => {
+  try {
+    const clients = await Client.find().select('-password').sort({ createdAt: -1 })
+    res.json(clients)
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' })
+  }
+})
+
+router.post('/admin/clients', protect, async (req, res) => {
+  try {
+    const { name, email, password, caseStatus, latestUpdate } = req.body
+    
+    const exists = await Client.findOne({ email })
+    if (exists) {
+      return res.status(400).json({ error: 'Client with this email already exists' })
+    }
+
+    const client = await Client.create({
+      name,
+      email,
+      password,
+      caseStatus: caseStatus || "Submitted",
+      latestUpdate: latestUpdate || ""
+    })
+    
+    // Don't send back password
+    const clientData = await Client.findById(client._id).select('-password')
+    res.status(201).json(clientData)
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' })
+  }
+})
+
+router.put('/admin/clients/:id', protect, async (req, res) => {
+  try {
+    const { caseStatus, latestUpdate } = req.body
+    const updateData = {}
+    if (caseStatus) updateData.caseStatus = caseStatus
+    if (latestUpdate !== undefined) updateData.latestUpdate = latestUpdate
+    
+    const client = await Client.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      { new: true }
+    ).select('-password')
+    
+    res.json(client)
   } catch (err) {
     res.status(500).json({ error: 'Server error' })
   }

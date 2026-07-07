@@ -1,5 +1,16 @@
+import { Helmet } from 'react-helmet-async'
+
 export default function PrivacyPolicy() {
   return (
+    <>
+    <Helmet>
+      <title>Privacy Policy | Future Point Immigration</title>
+      <meta name="description" content="Read our privacy policy to understand how we collect, use, and protect your information." />
+      <meta property="og:title" content="Privacy Policy | Future Point Immigration" />
+      <meta property="og:description" content="Read our privacy policy to understand how we collect, use, and protect your information." />
+      <meta property="og:type" content="website" />
+      <meta property="og:image" content="https://futurepoint.com/og-image.jpg" />
+    </Helmet>
     <div className="bg-slate-50 min-h-screen py-16 md:py-24">
       <div className="container-custom max-w-4xl">
         <div className="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-slate-100">
@@ -62,8 +73,9 @@ export default function PrivacyPolicy() {
             </p>
             <p>
               <strong>Future Point Immigration Consultancy</strong><br />
-              123 Immigration Blvd, Suite 400<br />
-              New Delhi, ND 110001<br />
+              Near Bus Stand,Kaithal
+              Kaithal-136027<br />
+              Haryana<br />
               India<br />
               Email: futurepointconsultantcy@gmail.com<br />
               Phone: +91 74950 41916, +91 89509 87002, +91 82220 00285
@@ -72,5 +84,6 @@ export default function PrivacyPolicy() {
         </div>
       </div>
     </div>
+    </>
   )
 }

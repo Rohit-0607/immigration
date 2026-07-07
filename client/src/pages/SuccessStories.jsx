@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
 import { Star } from 'lucide-react'
+import { Helmet } from 'react-helmet-async'
 import ContactForm from '../components/ContactForm'
 
 export default function SuccessStories() {
   const [testimonials, setTestimonials] = useState([])
   const [loading, setLoading] = useState(true)
+
 
   useEffect(() => {
     const fetchTestimonials = async () => {
@@ -24,6 +26,15 @@ export default function SuccessStories() {
   }, [])
 
   return (
+    <>
+    <Helmet>
+      <title>Success Stories | Future Point Immigration</title>
+      <meta name="description" content="Read success stories and testimonials from our clients who achieved their immigration dreams with Future Point." />
+      <meta property="og:title" content="Success Stories | Future Point Immigration" />
+      <meta property="og:description" content="Read success stories and testimonials from our clients who achieved their immigration dreams with Future Point." />
+      <meta property="og:type" content="website" />
+      <meta property="og:image" content="https://futurepoint.com/og-image.jpg" />
+    </Helmet>
     <div className="bg-slate-50 min-h-screen pb-20">
       <div className="bg-primary-950 text-white py-16 md:py-24 text-center">
         <div className="container-custom max-w-3xl mx-auto">
@@ -85,5 +96,6 @@ export default function SuccessStories() {
         </div>
       </div>
     </div>
+    </>
   )
 }

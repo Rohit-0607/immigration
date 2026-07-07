@@ -29,6 +29,7 @@ const seedData = async () => {
       { icon: 'fa-plane', title: 'Tourist Visa', description: 'Travel the world hassle-free. We provide complete assistance for tourist and visitor visa applications to all major destinations.', order: 4 },
       { icon: 'fa-building', title: 'Business Visa', description: 'Expand your business internationally. Get expert guidance on investor visas, startup visas, and entrepreneur immigration programs.', order: 5 },
       { icon: 'fa-heart', title: 'Spouse / Family Visa', description: 'Reunite with your loved ones abroad. We handle spouse visas, dependent visas, family sponsorship & super visa applications.', order: 6 },
+      { icon: 'fa-stamp', title: 'PR Visa', description: 'Already have your invitation or nomination? We handle the complete filing process — medicals, police clearances, biometrics, and documentation — through to your final PR visa approval and landing.', order: 7 },
     ])
 
     // Seed Countries

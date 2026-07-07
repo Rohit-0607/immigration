@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Helmet } from 'react-helmet-async'
 import FAQAccordion from '../components/FAQAccordion'
 
 const faqs = [
@@ -50,8 +51,31 @@ const faqs = [
 export default function FAQ() {
   const [activeCategory, setActiveCategory] = useState('General')
 
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.flatMap(group => group.items.map(item => ({
+      "@type": "Question",
+      "name": item.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.answer
+      }
+    })))
+  }
+
   return (
-    <div className="bg-slate-50 py-16 md:py-24 min-h-screen">
+    <>
+      <Helmet>
+        <title>Frequently Asked Questions | Future Point Immigration</title>
+        <meta name="description" content="Find answers to common questions about immigration, study visas, permanent residency, and our consulting services." />
+        <meta property="og:title" content="Immigration FAQs - Future Point" />
+        <meta property="og:description" content="Find answers to common questions about immigration, study visas, permanent residency, and our consulting services." />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://futurepoint.com/og-image.jpg" />
+        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+      </Helmet>
+      <div className="bg-slate-50 py-16 md:py-24 min-h-screen">
       <div className="container-custom">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">Frequently Asked Questions</h1>
@@ -99,5 +123,6 @@ export default function FAQ() {
         </div>
       </div>
     </div>
+    </>
   )
 }

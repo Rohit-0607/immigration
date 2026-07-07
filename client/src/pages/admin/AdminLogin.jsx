@@ -18,6 +18,7 @@ export default function AdminLogin() {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ email, password })
       })
       
@@ -27,7 +28,6 @@ export default function AdminLogin() {
         throw new Error(data.error || 'Login failed')
       }
       
-      localStorage.setItem('adminToken', data.token)
       navigate('/admin/dashboard')
     } catch (err) {
       setError(err.message || 'Invalid email or password.')

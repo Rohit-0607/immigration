@@ -17,12 +17,10 @@ export default function AdminDashboard() {
 
   const fetchConsultations = async () => {
     try {
-      const token = localStorage.getItem('adminToken')
       const res = await fetch('/api/consultations', {
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       })
       if (res.status === 401) {
-        localStorage.removeItem('adminToken')
         navigate('/admin/login')
         return
       }
@@ -41,12 +39,11 @@ export default function AdminDashboard() {
 
   const handleStatusChange = async (type, id, newStatus) => {
     try {
-      const token = localStorage.getItem('adminToken')
       const res = await fetch(`/api/consultations/${type}/${id}/status`, {
         method: 'PUT',
+        credentials: 'include',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({ status: newStatus })
       })

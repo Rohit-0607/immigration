@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, Globe, ShieldCheck, Users, GraduationCap, Building, Heart } from 'lucide-react'
+import { ArrowRight, Globe, ShieldCheck, Users, GraduationCap, Building, Heart, Stamp } from 'lucide-react'
+import { Helmet } from 'react-helmet-async'
 
 // Hardcoded fallback or use API - the prompt asked for React router multi-page structure.
 // I will fetch from API for realism, as I've built the backend.
@@ -16,6 +17,7 @@ export default function Services() {
     'fa-plane': Globe,
     'fa-building': Building,
     'fa-heart': Heart,
+    'fa-stamp': Stamp,
   }
 
   useEffect(() => {
@@ -36,6 +38,11 @@ export default function Services() {
   }, [])
 
   return (
+    <>
+    <Helmet>
+      <title>Immigration Services | Future Point</title>
+      <meta name="description" content="Explore our comprehensive immigration services including Study Visas, PR, and Work Permits." />
+    </Helmet>
     <div className="bg-slate-50 min-h-screen pb-20">
       {/* Header */}
       <div className="bg-primary-950 text-white py-16 md:py-24">
@@ -80,5 +87,6 @@ export default function Services() {
         )}
       </div>
     </div>
+    </>
   )
 }

@@ -1,10 +1,33 @@
 import { Link } from 'react-router-dom'
 import { Globe, PlaneTakeoff, GraduationCap, Users, ShieldCheck, ChevronRight } from 'lucide-react'
+import { Helmet } from 'react-helmet-async'
 import ContactForm from '../components/ContactForm'
 
 export default function Home() {
+  const orgSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Future Point Immigration Consultants",
+    "url": "https://futurepoint.com",
+    "logo": "https://futurepoint.com/logo.png",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+91-89509-87002",
+      "contactType": "customer service"
+    }
+  }
+
   return (
     <>
+      <Helmet>
+        <title>Future Point Immigration | Your Global Journey Starts Here</title>
+        <meta name="description" content="Expert guidance for Study Visas, Permanent Residency, and Work Permits to Canada, Australia, UK, USA, and beyond." />
+        <meta property="og:title" content="Future Point Immigration Consultants" />
+        <meta property="og:description" content="Expert guidance for Study Visas, Permanent Residency, and Work Permits." />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://futurepoint.com/og-image.jpg" />
+        <script type="application/ld+json">{JSON.stringify(orgSchema)}</script>
+      </Helmet>
       {/* Hero Section */}
       <section className="relative bg-primary-950 text-white overflow-hidden pt-12 pb-24 md:pt-20 md:pb-32">
         {/* Background Overlay */}
@@ -37,6 +60,9 @@ export default function Home() {
                 </Link>
                 <Link to="/eligibility-checker" className="btn-outline border-white text-white hover:bg-white hover:text-primary-950 py-4 text-lg">
                   Check Eligibility
+                </Link>
+                <Link to="/points-calculator" className="btn-outline border-white text-white hover:bg-white hover:text-primary-950 py-4 text-lg hidden lg:flex items-center justify-center">
+                  CRS Calculator
                 </Link>
               </div>
 

@@ -1,6 +1,8 @@
 import { useParams, Link } from 'react-router-dom'
 import { ArrowLeft, CheckCircle2 } from 'lucide-react'
+import { Helmet } from 'react-helmet-async'
 import ContactForm from '../components/ContactForm'
+import NotFound from './NotFound'
 
 // Mock detailed data for individual services
 const serviceDetails = {
@@ -22,8 +24,8 @@ const serviceDetails = {
       'Pre-departure Briefing'
     ]
   },
-  'work-visa': {
-    title: 'Work Visa',
+  'work-permit': {
+    title: 'Work Permit',
     tagline: 'Accelerate your career on a global scale.',
     description: 'Whether you have an employer sponsor or are applying as an independent skilled worker, we navigate the complex work permit processes to ensure you can legally live and work in your dream destination.',
     benefits: [
@@ -57,6 +59,78 @@ const serviceDetails = {
       'Invitation to Apply (ITA)',
       'Final PR Application Submission'
     ]
+  },
+  'pr-visa': {
+    title: 'PR Visa',
+    tagline: 'From invitation to landing — we handle the paperwork.',
+    description: 'Already have your invitation or nomination? We handle the complete filing process — medicals, police clearances, biometrics, and documentation — through to your final PR visa approval and landing.',
+    benefits: [
+      'Complete medical & police clearance guidance',
+      'Document review before submission to avoid delays',
+      'Biometrics and interview preparation',
+      'Support through to final landing and PR card'
+    ],
+    process: [
+      'Document Checklist Review',
+      'Medical Exam & Police Clearance Filing',
+      'Final Application Submission',
+      'Biometrics Appointment',
+      'PR Approval & Landing Support'
+    ]
+  },
+  'tourist-visa': {
+    title: 'Tourist Visa',
+    tagline: 'Explore the world with hassle-free travel visas.',
+    description: 'Planning a holiday, visiting family, or simply exploring a new country? We streamline the tourist visa process, helping you compile the right documents to demonstrate your strong ties and genuine intent to travel.',
+    benefits: [
+      'Expert review of financial documents',
+      'Itinerary and cover letter assistance',
+      'Guidance on overcoming past refusals',
+      'Stress-free application tracking'
+    ],
+    process: [
+      'Travel Plan Assessment',
+      'Document Gathering & Review',
+      'Application Form Completion',
+      'Embassy Appointment Booking',
+      'Visa Collection'
+    ]
+  },
+  'business-visa': {
+    title: 'Business Visa',
+    tagline: 'Expand your global footprint.',
+    description: 'For entrepreneurs, investors, and corporate professionals attending conferences or seeking to establish a branch overseas. We provide tailored solutions to meet strict business immigration criteria.',
+    benefits: [
+      'Attend international conferences and meetings',
+      'Explore foreign investment opportunities',
+      'Establish global business networks',
+      'Fast-tracked processing for corporate clients'
+    ],
+    process: [
+      'Business Objective Evaluation',
+      'Invitation Letter & Sponsorship Prep',
+      'Financial & Corporate Document Assembly',
+      'Visa Interview Preparation',
+      'Approval & Travel Readiness'
+    ]
+  },
+  'spouse-family-visa': {
+    title: 'Spouse / Family Visa',
+    tagline: 'Reunite with your loved ones abroad.',
+    description: 'Family reunification is a priority. We guide citizens and permanent residents in sponsoring their spouses, common-law partners, dependent children, and parents to join them in their new home.',
+    benefits: [
+      'Keep your family together',
+      'Spouses often receive open work permits',
+      'Children gain access to local schools',
+      'Pathway to permanent status for dependents'
+    ],
+    process: [
+      'Sponsor Eligibility Check',
+      'Relationship Evidence Compilation',
+      'Financial Undertaking Assessment',
+      'Application Assembly & Filing',
+      'Ongoing Embassy Communication'
+    ]
   }
 }
 
@@ -64,9 +138,22 @@ export default function ServiceDetail() {
   const { serviceId } = useParams()
   
   // In a real app, you'd fetch this detailed data from an API based on the slug
-  const service = serviceDetails[serviceId] || serviceDetails['study-visa'] // Fallback for demo
+  const service = serviceDetails[serviceId]
+
+  if (!service) {
+    return <NotFound />
+  }
 
   return (
+    <>
+    <Helmet>
+      <title>{service.title} | Future Point Immigration</title>
+      <meta name="description" content={service.description} />
+      <meta property="og:title" content={`${service.title} | Future Point Immigration`} />
+      <meta property="og:description" content={service.description} />
+      <meta property="og:type" content="website" />
+      <meta property="og:image" content="https://futurepoint.com/og-image.jpg" />
+    </Helmet>
     <div className="bg-white pb-20">
       {/* Hero */}
       <div className="bg-primary-950 text-white py-16 md:py-24 relative overflow-hidden">
@@ -125,5 +212,6 @@ export default function ServiceDetail() {
         </div>
       </div>
     </div>
+    </>
   )
 }

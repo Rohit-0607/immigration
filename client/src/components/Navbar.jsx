@@ -25,7 +25,7 @@ export default function Navbar() {
     { name: 'About', path: '/about' },
     { name: 'Services', path: '/services' },
     { name: 'Success Stories', path: '/success-stories' },
-    { name: 'Blog', path: '/blog' },
+    { name: 'Points Calculator', path: '/points-calculator' },
     { name: 'FAQ', path: '/faq' },
   ]
 
