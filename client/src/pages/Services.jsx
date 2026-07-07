@@ -21,7 +21,7 @@ export default function Services() {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/services')
+        const res = await fetch('/api/services')
         if (res.ok) {
           const data = await res.json()
           setServices(data)

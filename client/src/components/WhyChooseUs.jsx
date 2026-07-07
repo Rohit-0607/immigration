@@ -9,7 +9,7 @@ export default function WhyChooseUs() {
   useEffect(() => {
     const fetchFeatures = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/features')
+        const res = await fetch('/api/features')
         const data = await res.json()
         setFeatures(data)
       } catch (err) {

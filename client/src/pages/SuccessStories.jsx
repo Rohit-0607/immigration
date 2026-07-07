@@ -9,7 +9,7 @@ export default function SuccessStories() {
   useEffect(() => {
     const fetchTestimonials = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/testimonials')
+        const res = await fetch('/api/testimonials')
         if (res.ok) {
           const data = await res.json()
           setTestimonials(data)

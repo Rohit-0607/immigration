@@ -2,7 +2,7 @@ import { MessageCircle } from 'lucide-react'
 
 export default function WhatsAppButton() {
   // Replace with actual business WhatsApp number including country code
-  const whatsappNumber = '+91 89509 87002' 
+  const whatsappNumber = '91 8950987002' 
   const message = 'Hello Future Point! I would like to inquire about your immigration services.'
 
   return (

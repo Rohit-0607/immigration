@@ -85,7 +85,7 @@ export default function CallbackForm() {
                 </div>
                 <div className="callback-contact-text">
                   <strong>Email Us</strong>
-                  <a href="mailto:info@futurepoint.com">info@futurepoint.com</a>
+                  <a href="mailto:futurepointconsultantcy@gmail.com">futurepointconsultantcy@gmail.com</a>
                 </div>
               </div>
 

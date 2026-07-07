@@ -157,7 +157,7 @@ export default function Home() {
             <Link to="/contact" className="btn-accent py-4 px-8 text-lg">
               Book Your Free Consultation
             </Link>
-            <a href="tel:+1234567890" className="btn-outline border-white text-white hover:bg-white hover:text-primary-950 py-4 px-8 text-lg">
+            <a href="tel:+91 89509 87002" className="btn-outline border-white text-white hover:bg-white hover:text-primary-950 py-4 px-8 text-lg">
               Call Us Now
             </a>
           </div>

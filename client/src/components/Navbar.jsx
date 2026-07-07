@@ -59,10 +59,14 @@ export default function Navbar() {
               ))}
             </div>
             <div className="flex items-center gap-4">
-              <a href="tel:+1234567890" className="hidden lg:flex items-center gap-2 text-slate-600 hover:text-primary-600 font-medium text-sm">
-                <Phone className="w-4 h-4" />
-                +1 (234) 567-890
-              </a>
+              <div className="hidden lg:flex items-center gap-2 text-slate-600 font-medium text-[11px] xl:text-xs">
+                <Phone className="w-4 h-4 shrink-0" />
+                <div className="flex flex-col">
+                  <a href="tel:+917495041916" className="hover:text-primary-600">+91 74950 41916</a>
+                  <a href="tel:+918950987002" className="hover:text-primary-600">+91 89509 87002</a>
+                  <a href="tel:+918222000285" className="hover:text-primary-600">+91 82220 00285</a>
+                </div>
+              </div>
               <Link to="/contact" className="btn-primary py-2 px-5 text-sm">
                 Book Consultation
               </Link>
@@ -99,10 +103,17 @@ export default function Navbar() {
               {link.name}
             </Link>
           ))}
-          <a href="tel:+1234567890" className="flex items-center gap-2 text-slate-600 font-medium py-2">
-            <Phone className="w-5 h-5" />
-            +1 (234) 567-890
-          </a>
+          <div className="flex flex-col gap-2 text-slate-600 font-medium py-2">
+            <div className="flex items-center gap-2">
+              <Phone className="w-5 h-5" />
+              <span>Call Us:</span>
+            </div>
+            <div className="flex flex-col pl-7 gap-1">
+              <a href="tel:+917495041916" className="hover:text-primary-600">+91 74950 41916</a>
+              <a href="tel:+918950987002" className="hover:text-primary-600">+91 89509 87002</a>
+              <a href="tel:+918222000285" className="hover:text-primary-600">+91 82220 00285</a>
+            </div>
+          </div>
           <Link to="/eligibility-checker" className="btn-outline w-full py-2">
             Check Eligibility
           </Link>

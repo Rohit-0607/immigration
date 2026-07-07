@@ -65,8 +65,8 @@ export default function PrivacyPolicy() {
               123 Immigration Blvd, Suite 400<br />
               New Delhi, ND 110001<br />
               India<br />
-              Email: info@futurepoint.example.com<br />
-              Phone: +1 (234) 567-890
+              Email: futurepointconsultantcy@gmail.com<br />
+              Phone: +91 74950 41916, +91 89509 87002, +91 82220 00285
             </p>
           </div>
         </div>

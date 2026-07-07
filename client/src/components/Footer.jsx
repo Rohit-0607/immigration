@@ -75,18 +75,22 @@ export default function Footer() {
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-gold shrink-0 mt-0.5" />
                 <span className="text-sm leading-relaxed">
-                  123 Immigration Blvd, Suite 400<br />
-                  New Delhi, ND 110001<br />
+                  123 baragaon<br />
+                  Karnal,132001<br />
                   India
                 </span>
               </li>
-              <li className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-gold shrink-0" />
-                <a href="tel:+1234567890" className="text-sm hover:text-gold transition-colors">+1 (234) 567-890</a>
+              <li className="flex items-start gap-3">
+                <Phone className="w-5 h-5 text-gold shrink-0 mt-1" />
+                <div className="flex flex-col gap-1">
+                  <a href="tel:+917495041916" className="text-sm hover:text-gold transition-colors">+91 74950 41916</a>
+                  <a href="tel:+918950987002" className="text-sm hover:text-gold transition-colors">+91 89509 87002</a>
+                  <a href="tel:+918222000285" className="text-sm hover:text-gold transition-colors">+91 82220 00285</a>
+                </div>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-5 h-5 text-gold shrink-0" />
-                <a href="mailto:info@futurepoint.example.com" className="text-sm hover:text-gold transition-colors">info@futurepoint.example.com</a>
+                <a href="mailto:futurepointconsultantcy@gmail.com" className="text-sm hover:text-gold transition-colors">futurepointconsultantcy@gmail.com</a>
               </li>
             </ul>
           </div>
