@@ -85,6 +85,22 @@ export default function Services() {
             })}
           </div>
         )}
+
+        {/* Document Checklist CTA */}
+        <div className="mt-16 bg-primary-900 rounded-3xl p-8 md:p-12 text-center text-white relative overflow-hidden shadow-xl border border-primary-800">
+          <div className="relative z-10 max-w-2xl mx-auto">
+            <h2 className="text-3xl font-bold mb-4">Not sure what documents you need?</h2>
+            <p className="text-primary-200 text-lg mb-8">
+              Use our interactive Document Checklist tool to see exactly what paperwork is required for your specific visa and destination country.
+            </p>
+            <Link 
+              to="/document-checklist" 
+              className="inline-block bg-gold hover:bg-yellow-500 text-primary-950 font-bold py-4 px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1"
+            >
+              Try the Checklist Tool
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
     </>

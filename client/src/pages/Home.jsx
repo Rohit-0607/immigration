@@ -55,7 +55,7 @@ export default function Home() {
                 Expert guidance for Study Visas, Permanent Residency, and Work Permits to Canada, Australia, UK, USA, and beyond. 
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link to="/contact" className="btn-accent py-4 text-lg">
+                <Link to="/book-consultation" className="btn-accent py-4 text-lg">
                   Book Free Consultation
                 </Link>
                 <Link to="/eligibility-checker" className="btn-outline border-white text-white hover:bg-white hover:text-primary-950 py-4 text-lg">

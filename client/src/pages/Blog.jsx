@@ -1,42 +1,30 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Calendar, User, ArrowRight } from 'lucide-react'
+import { Calendar, ArrowRight } from 'lucide-react'
 import { Helmet } from 'react-helmet-async'
 
-// Mock Data for Blogs
-export const blogPosts = [
-  {
-    id: 1,
-    slug: 'canada-express-entry-draw-2026',
-    title: 'Canada Express Entry Draw Updates for 2026',
-    excerpt: 'IRCC has announced new category-based draws focusing on healthcare, STEM, and trades. Find out if you qualify.',
-    image: 'https://images.unsplash.com/photo-1517935706615-2717063c2225?w=600&h=400&fit=crop',
-    date: 'July 1, 2026',
-    author: 'Immigration Team',
-    content: 'Full content goes here. The Canadian government continues to prioritize targeted draws to address specific labor shortages in the country. In this comprehensive guide, we explore the new point system and how you can boost your Comprehensive Ranking System (CRS) score to secure an Invitation to Apply (ITA) in 2026...'
-  },
-  {
-    id: 2,
-    slug: 'australia-student-visa-changes',
-    title: 'Major Changes to Australia Student Visas',
-    excerpt: 'The Genuine Student (GS) requirement replaces the GTE. Heres what you need to know before applying.',
-    image: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=600&h=400&fit=crop',
-    date: 'June 28, 2026',
-    author: 'Study Abroad Team',
-    content: 'The Australian Department of Home Affairs has officially replaced the Genuine Temporary Entrant (GTE) requirement with the Genuine Student (GS) requirement. This change aims to provide clearer pathways for students who genuinely intend to study and contribute to the Australian economy...'
-  },
-  {
-    id: 3,
-    slug: 'uk-skilled-worker-visa-guide',
-    title: 'How to Secure a UK Skilled Worker Visa',
-    excerpt: 'A complete step-by-step guide to finding an approved sponsor and successfully navigating the UK immigration system.',
-    image: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=600&h=400&fit=crop',
-    date: 'June 15, 2026',
-    author: 'Corporate Immigration',
-    content: 'The UK Skilled Worker route requires a confirmed job offer from a Home Office approved sponsor. In this article, we break down the salary thresholds, English language requirements, and how to verify if your prospective employer holds the correct license...'
-  }
-]
-
 export default function Blog() {
+  const [posts, setPosts] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const res = await fetch('/api/blog-posts')
+        if (!res.ok) throw new Error('Failed to fetch blog posts')
+        const data = await res.json()
+        setPosts(data)
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchPosts()
+  }, [])
+
   return (
     <>
     <Helmet>
@@ -56,32 +44,47 @@ export default function Blog() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {blogPosts.map((post) => (
-            <article key={post.id} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-xl transition-shadow duration-300 flex flex-col">
-              <Link to={`/blog/${post.slug}`} className="block overflow-hidden relative pt-[60%]">
-                <img 
-                  src={post.image} 
-                  alt={post.title} 
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                />
-              </Link>
-              <div className="p-8 flex flex-col flex-grow">
-                <div className="flex items-center gap-4 text-sm text-slate-500 mb-4">
-                  <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4" /> {post.date}</span>
-                </div>
-                <h2 className="text-xl font-bold text-slate-900 mb-3 hover:text-primary-600 transition-colors">
-                  <Link to={`/blog/${post.slug}`}>{post.title}</Link>
-                </h2>
-                <p className="text-slate-600 mb-6 line-clamp-3 flex-grow">{post.excerpt}</p>
-                
-                <Link to={`/blog/${post.slug}`} className="inline-flex items-center text-primary-700 font-semibold hover:text-primary-800 mt-auto">
-                  Read Article <ArrowRight className="w-4 h-4 ml-1" />
+        {loading ? (
+          <div className="text-center text-slate-500 py-12">Loading posts...</div>
+        ) : error ? (
+          <div className="text-center text-red-500 py-12">{error}</div>
+        ) : posts.length === 0 ? (
+          <div className="text-center text-slate-500 py-12">No blog posts found. Check back later!</div>
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {posts.map((post) => (
+              <article key={post._id} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-xl transition-shadow duration-300 flex flex-col">
+                <Link to={`/blog/${post.slug}`} className="block overflow-hidden relative pt-[60%] bg-slate-200">
+                  {post.coverImage ? (
+                    <img 
+                      src={post.coverImage} 
+                      alt={post.title} 
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center text-slate-400">No Image</div>
+                  )}
                 </Link>
-              </div>
-            </article>
-          ))}
-        </div>
+                <div className="p-8 flex flex-col flex-grow">
+                  <div className="flex items-center gap-4 text-sm text-slate-500 mb-4">
+                    <span className="flex items-center gap-1.5">
+                      <Calendar className="w-4 h-4" /> 
+                      {new Date(post.publishedAt || post.createdAt).toLocaleDateString()}
+                    </span>
+                  </div>
+                  <h2 className="text-xl font-bold text-slate-900 mb-3 hover:text-primary-600 transition-colors">
+                    <Link to={`/blog/${post.slug}`}>{post.title}</Link>
+                  </h2>
+                  <p className="text-slate-600 mb-6 line-clamp-3 flex-grow">{post.excerpt}</p>
+                  
+                  <Link to={`/blog/${post.slug}`} className="inline-flex items-center text-primary-700 font-semibold hover:text-primary-800 mt-auto">
+                    Read Article <ArrowRight className="w-4 h-4 ml-1" />
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
       </div>
     </div>
     </>

@@ -1,17 +1,40 @@
+import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { Calendar, User, ArrowLeft } from 'lucide-react'
 import { Helmet } from 'react-helmet-async'
-import { blogPosts } from './Blog'
 
 export default function BlogPost() {
   const { slug } = useParams()
-  const post = blogPosts.find(p => p.slug === slug)
+  const [post, setPost] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
-  if (!post) {
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const res = await fetch(`/api/blog-posts/${slug}`)
+        if (!res.ok) throw new Error('Post not found')
+        const data = await res.json()
+        setPost(data)
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchPost()
+  }, [slug])
+
+  if (loading) {
+    return <div className="container-custom py-32 text-center min-h-[60vh] text-slate-500">Loading...</div>
+  }
+
+  if (error || !post) {
     return (
       <div className="container-custom py-32 text-center min-h-[60vh]">
         <h1 className="text-3xl font-bold text-slate-900 mb-4">Post Not Found</h1>
-        <p className="text-slate-600 mb-8">The article you are looking for does not exist.</p>
+        <p className="text-slate-600 mb-8">The article you are looking for does not exist or has been removed.</p>
         <Link to="/blog" className="btn-primary">Return to Blog</Link>
       </div>
     )
@@ -25,7 +48,7 @@ export default function BlogPost() {
       <meta property="og:title" content={`${post.title} | Future Point Immigration`} />
       <meta property="og:description" content={post.excerpt} />
       <meta property="og:type" content="article" />
-      <meta property="og:image" content={post.image || "https://futurepoint.com/og-image.jpg"} />
+      <meta property="og:image" content={post.coverImage || "https://futurepoint.com/og-image.jpg"} />
     </Helmet>
     <article className="bg-white py-16 md:py-24">
       <div className="container-custom">
@@ -43,39 +66,31 @@ export default function BlogPost() {
               <div className="w-10 h-10 bg-primary-50 rounded-full flex items-center justify-center text-primary-600">
                 <User className="w-5 h-5" />
               </div>
-              <span className="font-medium text-slate-700">{post.author}</span>
+              <span className="font-medium text-slate-700">Immigration Team</span>
             </div>
             <div className="flex items-center gap-2">
               <Calendar className="w-5 h-5" />
-              <span>{post.date}</span>
+              <span>{new Date(post.publishedAt || post.createdAt).toLocaleDateString()}</span>
             </div>
           </div>
 
-          <img 
-            src={post.image} 
-            alt={post.title} 
-            className="w-full h-auto rounded-2xl mb-12 shadow-md object-cover max-h-[500px]"
-          />
+          {post.coverImage && (
+            <img 
+              src={post.coverImage} 
+              alt={post.title} 
+              className="w-full h-auto rounded-2xl mb-12 shadow-md object-cover max-h-[500px]"
+            />
+          )}
 
-          <div className="prose prose-lg prose-slate max-w-none prose-a:text-primary-600 hover:prose-a:text-primary-800">
-            <p className="text-xl text-slate-700 leading-relaxed mb-8 font-medium">
-              {post.excerpt}
-            </p>
-            <p className="text-slate-600 leading-relaxed mb-6">
-              {post.content}
-            </p>
-            <p className="text-slate-600 leading-relaxed mb-6">
-              (This is placeholder content. In a production environment, this would be fetched from a headless CMS or your MongoDB backend and rendered using a rich text parser or Markdown renderer.)
-            </p>
-            <p className="text-slate-600 leading-relaxed">
-              If you believe you qualify under these new updates, do not hesitate to contact our expert consultants. Early preparation is key to securing your visa successfully.
-            </p>
-          </div>
+          <div 
+            className="prose prose-lg prose-slate max-w-none prose-a:text-primary-600 hover:prose-a:text-primary-800"
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
 
           <div className="mt-16 pt-10 border-t border-slate-100 bg-slate-50 p-8 rounded-2xl text-center">
             <h3 className="text-2xl font-bold text-slate-900 mb-4">Need help with your application?</h3>
             <p className="text-slate-600 mb-6">Our experts are here to evaluate your profile and guide you through the process.</p>
-            <Link to="/contact" className="btn-primary py-3 px-8">Book a Consultation</Link>
+            <Link to="/book-consultation" className="btn-primary py-3 px-8">Book a Consultation</Link>
           </div>
         </div>
       </div>

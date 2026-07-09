@@ -1,5 +1,5 @@
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, Users, UserCheck, LogOut, Calculator, FolderLock } from 'lucide-react'
+import { LayoutDashboard, Users, UserCheck, LogOut, Calculator, FolderLock, FileText, PieChart } from 'lucide-react'
 
 export default function AdminLayout() {
   const { pathname } = useLocation()
@@ -16,10 +16,13 @@ export default function AdminLayout() {
 
   const navItems = [
     { name: 'Dashboard', path: '/admin/dashboard', icon: LayoutDashboard },
+    { name: 'Analytics', path: '/admin/analytics', icon: PieChart },
     { name: 'Consultations', path: '/admin/consultations', icon: Users },
     { name: 'Eligibility Leads', path: '/admin/leads', icon: UserCheck },
     { name: 'Points Leads', path: '/admin/points-leads', icon: Calculator },
+    { name: 'Checklist Leads', path: '/admin/checklist-leads', icon: FolderLock },
     { name: 'Client Management', path: '/admin/clients', icon: FolderLock },
+    { name: 'Blog', path: '/admin/blog', icon: FileText },
   ]
 
   return (

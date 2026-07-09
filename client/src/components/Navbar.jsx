@@ -25,7 +25,9 @@ export default function Navbar() {
     { name: 'About', path: '/about' },
     { name: 'Services', path: '/services' },
     { name: 'Success Stories', path: '/success-stories' },
+    { name: 'Blog', path: '/blog' },
     { name: 'Points Calculator', path: '/points-calculator' },
+    { name: 'Document Checklist', path: '/document-checklist' },
     { name: 'FAQ', path: '/faq' },
   ]
 
@@ -67,7 +69,7 @@ export default function Navbar() {
                   <a href="tel:+918222000285" className="hover:text-primary-600">+91 82220 00285</a>
                 </div>
               </div>
-              <Link to="/contact" className="btn-primary py-2 px-5 text-sm">
+              <Link to="/book-consultation" className="btn-primary py-2 px-5 text-sm">
                 Book Consultation
               </Link>
             </div>
@@ -75,7 +77,7 @@ export default function Navbar() {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center gap-4">
-            <Link to="/contact" className="btn-primary py-1.5 px-4 text-xs">
+            <Link to="/book-consultation" className="btn-primary py-1.5 px-4 text-xs">
               Book
             </Link>
             <button

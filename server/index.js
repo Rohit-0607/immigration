@@ -50,6 +50,12 @@ app.use(cookieParser())
 app.use('/api', apiRoutes)
 app.use('/api/client', clientRoutes)
 
+// Handle sitemap rewrite internally if deployed on Vercel
+app.get('/sitemap.xml', (req, res, next) => {
+  req.url = '/api/sitemap.xml';
+  app.handle(req, res, next);
+})
+
 // Serve static files in production
 const clientBuildPath = path.join(__dirname, '..', 'client', 'dist')
 app.use(express.static(clientBuildPath))

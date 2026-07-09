@@ -11,6 +11,8 @@ const clientSchema = new mongoose.Schema({
     default: "Submitted" 
   },
   latestUpdate: { type: String, default: "" },
+  setupToken: { type: String },
+  setupTokenExpiry: { type: Date },
   documents: [{
     filename: String,
     uploadDate: Date
