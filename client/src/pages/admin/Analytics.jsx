@@ -9,7 +9,7 @@ export default function Analytics() {
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
-        const res = await fetch('/api/admin/analytics', { credentials: 'include' })
+        const res = await fetch('/api/admin/stats', { credentials: 'include' })
         if (res.status === 401) {
           window.location.href = '/admin/login'
           return

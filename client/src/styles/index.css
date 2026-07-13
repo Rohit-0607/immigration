@@ -14,6 +14,19 @@
   h1, h2, h3, h4, h5, h6 {
     @apply text-slate-900 font-bold tracking-tight;
   }
+
+  /* Dropdown option text: black on light, white on dark */
+  select option {
+    background-color: #ffffff;
+    color: #000000;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    select option {
+      background-color: #1e293b;
+      color: #ffffff;
+    }
+  }
 }
 
 @layer components {

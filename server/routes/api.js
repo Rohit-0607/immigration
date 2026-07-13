@@ -282,7 +282,7 @@ router.put('/points-leads/:id/status', protect, async (req, res) => {
 // ==========================================
 // ANALYTICS DASHBOARD
 // ==========================================
-router.get('/admin/analytics', protect, async (req, res) => {
+router.get('/admin/stats', protect, async (req, res) => {
   try {
     const sixMonthsAgo = new Date();
     sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 5);

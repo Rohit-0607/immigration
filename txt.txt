@@ -1,0 +1,8 @@
+mongodb://rairohit1422_db_user:1EppHQqidAihOjeQ@ac-ssc6kgu-shard-00-00.onylpb1.mongodb.net:27017,ac-ssc6kgu-shard-00-01.onylpb1.mongodb.net:27017,ac-ssc6kgu-shard-00-02.onylpb1.mongodb.net:27017/?ssl=true&replicaSet=atlas-op5imi-shard-0&authSource=admin&appName=Cluster0
+ 
+ mongodb+srv://rairohit1422_db_user:1EppHQqidAihOjeQ@cluster0.onylpb1.mongodb.net/
+ Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+:3000/api/countries:1  Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+:3000/api/contact:1  Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+ContactForm.jsx:81 Submission error: SyntaxError: Failed to execute 'json' on 'Response': Unexpected end of JSON input
+    at handleSubmit (ContactForm.jsx:72:37)

@@ -3,6 +3,17 @@ import { Link } from 'react-router-dom'
 import { CheckCircle2, ArrowRight, ArrowLeft } from 'lucide-react'
 import { Helmet } from 'react-helmet-async'
 
+const FALLBACK_COUNTRIES = [
+  'Australia', 'Austria', 'Bahrain', 'Bangladesh', 'Belgium', 'Canada', 'China', 'Cyprus',
+  'Czech Republic', 'Denmark', 'Dubai (UAE)', 'Finland', 'France', 'Germany', 'Greece',
+  'Hungary', 'India', 'Indonesia', 'Ireland', 'Italy', 'Japan', 'Jordan', 'Kazakhstan',
+  'Kenya', 'Kuwait', 'Malaysia', 'Malta', 'Mauritius', 'Mexico', 'Netherlands',
+  'New Zealand', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Philippines', 'Poland',
+  'Portugal', 'Qatar', 'Romania', 'Saudi Arabia', 'Singapore', 'South Korea',
+  'Spain', 'Sri Lanka', 'Sweden', 'Switzerland', 'Thailand', 'Turkey',
+  'United Arab Emirates', 'United Kingdom', 'USA', 'Vietnam'
+]
+
 const helmetBlock = (
   <Helmet>
     <title>Eligibility Checker | Future Point Immigration</title>
@@ -86,9 +97,13 @@ export default function EligibilityChecker() {
     fetch('/api/countries')
       .then(res => res.json())
       .then(data => {
-        setCountries(data.map(c => c.name).sort())
+        if (Array.isArray(data) && data.length > 0) {
+          setCountries(data.map(c => c.name).sort())
+        } else {
+          setCountries(FALLBACK_COUNTRIES)
+        }
       })
-      .catch(console.error)
+      .catch(() => setCountries(FALLBACK_COUNTRIES))
   }, [])
 
   const handleSelect = (option) => {

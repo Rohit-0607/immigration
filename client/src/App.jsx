@@ -11,7 +11,7 @@ import EligibilityChecker from './pages/EligibilityChecker'
 import PointsCalculator from './pages/PointsCalculator'
 import Contact from './pages/Contact'
 import FAQ from './pages/FAQ'
-import PrivacyPolicy from './pages/PrivacyPolicy'
+import SitePrivacy from './pages/SitePrivacy'
 import BookConsultation from './pages/BookConsultation'
 import DocumentChecklist from './pages/DocumentChecklist'
 import NotFound from './pages/NotFound'
@@ -53,7 +53,7 @@ function App() {
         <Route path="document-checklist" element={<DocumentChecklist />} />
         <Route path="contact" element={<Contact />} />
         <Route path="faq" element={<FAQ />} />
-        <Route path="privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="privacy-policy" element={<SitePrivacy />} />
         <Route path="*" element={<NotFound />} />
       </Route>
 

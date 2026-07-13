@@ -7,6 +7,8 @@ import dotenv from 'dotenv'
 import connectDB from './config/db.js'
 import apiRoutes from './routes/api.js'
 import clientRoutes from './routes/client.js'
+import calWebhookRouter from './routes/calWebhook.js'
+
 
 // Load env vars
 dotenv.config()
@@ -49,6 +51,7 @@ app.use(cookieParser())
 // API Routes
 app.use('/api', apiRoutes)
 app.use('/api/client', clientRoutes)
+app.use(calWebhookRouter)
 
 // Handle sitemap rewrite internally if deployed on Vercel
 app.get('/sitemap.xml', (req, res, next) => {

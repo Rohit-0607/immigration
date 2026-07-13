@@ -1,6 +1,17 @@
 import { useState, useEffect } from 'react'
 import { CheckCircle2, AlertCircle } from 'lucide-react'
 
+const FALLBACK_COUNTRIES = [
+  'Australia', 'Austria', 'Bahrain', 'Bangladesh', 'Belgium', 'Canada', 'China', 'Cyprus',
+  'Czech Republic', 'Denmark', 'Dubai (UAE)', 'Finland', 'France', 'Germany', 'Greece',
+  'Hungary', 'India', 'Indonesia', 'Ireland', 'Italy', 'Japan', 'Jordan', 'Kazakhstan',
+  'Kenya', 'Kuwait', 'Malaysia', 'Malta', 'Mauritius', 'Mexico', 'Netherlands',
+  'New Zealand', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Philippines', 'Poland',
+  'Portugal', 'Qatar', 'Romania', 'Saudi Arabia', 'Singapore', 'South Korea',
+  'Spain', 'Sri Lanka', 'Sweden', 'Switzerland', 'Thailand', 'Turkey',
+  'United Arab Emirates', 'United Kingdom', 'USA', 'Vietnam'
+]
+
 export default function ContactForm() {
   const [formData, setFormData] = useState({
     name: '',
@@ -19,9 +30,17 @@ export default function ContactForm() {
     fetch('/api/countries')
       .then(res => res.json())
       .then(data => {
-        setCountriesList(data.map(c => c.name).sort())
+        // Use DB data if available and non-empty, otherwise fall back to hardcoded list
+        if (Array.isArray(data) && data.length > 0) {
+          setCountriesList(data.map(c => c.name).sort())
+        } else {
+          setCountriesList(FALLBACK_COUNTRIES)
+        }
       })
-      .catch(console.error)
+      .catch(() => {
+        // If fetch fails completely, still show countries
+        setCountriesList(FALLBACK_COUNTRIES)
+      })
   }, [])
 
   const handleChange = (e) => {
@@ -144,7 +163,7 @@ export default function ContactForm() {
             name="country"
             value={formData.country}
             onChange={handleChange}
-            className="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-shadow bg-white"
+            className="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-shadow bg-white text-slate-900"
           >
             <option value="">Select a country...</option>
             {countriesList.map((c, idx) => (
@@ -160,7 +179,7 @@ export default function ContactForm() {
             name="service"
             value={formData.service}
             onChange={handleChange}
-            className="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-shadow bg-white"
+            className="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-shadow bg-white text-slate-900"
           >
             <option value="">Select a service...</option>
             <option value="Study Visa">Study Visa</option>

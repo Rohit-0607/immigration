@@ -1,16 +1,18 @@
-import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
+import { useEffect } from 'react'
 import Cal, { getCalApi } from '@calcom/embed-react'
 
 export default function BookConsultation() {
   useEffect(() => {
     (async function () {
-      const cal = await getCalApi()
-      cal("ui", {
-        theme: "light",
-        styles: { branding: { brandColor: "#1d4ed8" } },
+      const cal = await getCalApi({ namespace: '15min' })
+      cal('ui', {
+        theme: 'light',
+        layout: 'month_view',
         hideEventTypeDetails: false,
-        layout: "month_view"
+        cssVarsPerTheme: {
+          light: { 'cal-brand': '#1d4ed8' }
+        }
       })
     })()
   }, [])
@@ -35,9 +37,10 @@ export default function BookConsultation() {
 
           <div className="bg-white rounded-2xl shadow-xl border border-slate-100 p-2 md:p-6 overflow-hidden min-h-[600px]">
             <Cal
+              namespace="15min"
               calLink="rohit-rai-g7py8l/15min"
               style={{ width: '100%', height: '100%', overflow: 'scroll' }}
-              config={{ layout: 'month_view', theme: 'light' }}
+              config={{ layout: 'month_view' }}
             />
           </div>
         </div>
