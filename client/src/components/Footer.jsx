@@ -1,112 +1,192 @@
 import { Link } from 'react-router-dom'
-import { MapPin, Phone, Mail, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react'
+import { MapPin, Phone, Mail, Facebook, Twitter, Instagram, Linkedin, ArrowRight, Globe } from 'lucide-react'
+
+const PURPLE = '#5B21B6'
 
 export default function Footer() {
+  const year = new Date().getFullYear()
+
   return (
-    <footer className="bg-primary-950 text-slate-300 pt-16 pb-8 border-t-4 border-gold">
-      <div className="container-custom">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
-          
-          {/* Brand Info */}
+    <footer style={{ backgroundColor: '#0F172A', borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+
+      {/* ── CTA Band — solid purple ── */}
+      <div className="py-16 relative overflow-hidden" style={{ backgroundColor: PURPLE }}>
+        {/* Subtle grid texture */}
+        <div className="absolute inset-0 opacity-[0.07]" style={{
+          backgroundImage: 'linear-gradient(rgba(0,0,0,1) 1px,transparent 1px), linear-gradient(90deg,rgba(0,0,0,1) 1px,transparent 1px)',
+          backgroundSize: '40px 40px'
+        }} />
+        <div className="container-custom relative z-10 text-center">
+          <div className="pill-label-dark mx-auto w-fit mb-4">
+            <Globe className="w-4 h-4" /> Start Your Journey
+          </div>
+          <h2 className="text-3xl md:text-4xl font-black text-white mb-4"
+            style={{ fontFamily: 'Outfit, sans-serif' }}>
+            Ready to Build Your Global Future?
+          </h2>
+          <p className="text-purple-200 text-lg mb-8 max-w-xl mx-auto">
+            Book a free consultation with our experts and discover the best immigration pathway for you.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <Link
+              to="/book-consultation"
+              className="inline-flex items-center justify-center gap-2 px-8 py-3.5 font-black text-purple-900 rounded-xl transition-all duration-200 hover:scale-105 shadow-lg"
+              style={{ backgroundColor: 'white', fontFamily: 'Outfit, sans-serif' }}
+            >
+              Book Free Consultation
+            </Link>
+            <a href="https://wa.me/917495041916" target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-8 py-3.5 font-black text-white rounded-xl border-2 border-white/40 hover:bg-white/10 transition-all duration-200"
+              style={{ fontFamily: 'Outfit, sans-serif' }}
+            >
+              WhatsApp Us <ArrowRight className="w-4 h-4" />
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Main Footer ── */}
+      <div className="container-custom pt-16 pb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-14">
+
+          {/* Brand */}
           <div>
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-8 h-8 rounded bg-gold flex items-center justify-center text-primary-950 font-bold text-lg">
-                FP
-              </div>
-              <span className="text-2xl font-bold text-white tracking-tight">
-                Future Point
+            <Link to="/" className="flex items-center gap-2.5 mb-6">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-black text-lg"
+                style={{ backgroundColor: PURPLE }}>FP</div>
+              <span className="text-xl font-black text-white" style={{ fontFamily: 'Outfit, sans-serif' }}>
+                Future <span style={{ color: '#A78BFA' }}>Point</span>
               </span>
-            </div>
-            <p className="text-sm text-slate-400 mb-6 leading-relaxed">
-              Your trusted partner in global immigration. We provide expert guidance for study, work, and permanent residency visas to top destinations worldwide.
+            </Link>
+            <p className="text-slate-400 text-sm leading-relaxed mb-6">
+              Your trusted partner in global immigration. Expert guidance for study, work, and permanent residency visas worldwide.
             </p>
-            <div className="flex space-x-4">
-              <a href="#" className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-gold hover:text-primary-950 transition-colors" aria-label="Facebook">
-                <Facebook className="w-4 h-4" />
-              </a>
-              <a href="#" className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-gold hover:text-primary-950 transition-colors" aria-label="Twitter">
-                <Twitter className="w-4 h-4" />
-              </a>
-              <a href="#" className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-gold hover:text-primary-950 transition-colors" aria-label="Instagram">
-                <Instagram className="w-4 h-4" />
-              </a>
-              <a href="#" className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-gold hover:text-primary-950 transition-colors" aria-label="LinkedIn">
-                <Linkedin className="w-4 h-4" />
-              </a>
+            <div className="flex gap-3">
+              {[
+                { icon: Facebook, href: '#', label: 'Facebook' },
+                { icon: Instagram, href: '#', label: 'Instagram' },
+                { icon: Linkedin, href: '#', label: 'LinkedIn' },
+                { icon: Twitter, href: '#', label: 'Twitter' },
+              ].map(({ icon: Icon, href, label }) => (
+                <a key={label} href={href} aria-label={label}
+                  className="w-9 h-9 rounded-lg flex items-center justify-center text-slate-400 transition-all duration-200 hover:text-white hover:scale-110"
+                  style={{ backgroundColor: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
+                  onMouseEnter={e => e.currentTarget.style.backgroundColor = PURPLE}
+                  onMouseLeave={e => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.06)'}
+                >
+                  <Icon className="w-4 h-4" />
+                </a>
+              ))}
             </div>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-white font-semibold text-lg mb-6 relative inline-block after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-12 after:h-1 after:bg-gold after:rounded-full">
+            <h3 className="text-white font-black text-base mb-5 flex items-center gap-2"
+              style={{ fontFamily: 'Outfit, sans-serif' }}>
+              <span className="w-5 h-0.5 rounded-full inline-block" style={{ backgroundColor: PURPLE }} />
               Quick Links
             </h3>
             <ul className="space-y-3">
-              <li><Link to="/about" className="text-sm hover:text-gold transition-colors">About Us</Link></li>
-              <li><Link to="/services" className="text-sm hover:text-gold transition-colors">Our Services</Link></li>
-              <li><Link to="/success-stories" className="text-sm hover:text-gold transition-colors">Success Stories</Link></li>
-              <li><Link to="/blog" className="text-sm hover:text-gold transition-colors">Latest News & Blog</Link></li>
-              <li><Link to="/eligibility-checker" className="text-sm hover:text-gold transition-colors">Eligibility Checker</Link></li>
-              <li><Link to="/faq" className="text-sm hover:text-gold transition-colors">FAQs</Link></li>
+              {[
+                { label: 'About Us', path: '/about' },
+                { label: 'Our Services', path: '/services' },
+                { label: 'Success Stories', path: '/success-stories' },
+                { label: 'Blog & News', path: '/blog' },
+                { label: 'Eligibility Checker', path: '/eligibility-checker' },
+                { label: 'FAQs', path: '/faq' },
+                { label: 'Contact Us', path: '/contact' },
+              ].map(({ label, path }) => (
+                <li key={label}>
+                  <Link to={path}
+                    className="text-sm text-slate-400 hover:text-white transition-colors flex items-center gap-1.5 group">
+                    <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 -ml-5 group-hover:ml-0 transition-all duration-200" style={{ color: '#A78BFA' }} />
+                    {label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Services */}
           <div>
-            <h3 className="text-white font-semibold text-lg mb-6 relative inline-block after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-12 after:h-1 after:bg-gold after:rounded-full">
+            <h3 className="text-white font-black text-base mb-5 flex items-center gap-2"
+              style={{ fontFamily: 'Outfit, sans-serif' }}>
+              <span className="w-5 h-0.5 rounded-full inline-block" style={{ backgroundColor: PURPLE }} />
               Our Services
             </h3>
             <ul className="space-y-3">
-              <li><Link to="/services/study-visa" className="text-sm hover:text-gold transition-colors">Study Visa</Link></li>
-              <li><Link to="/services/work-visa" className="text-sm hover:text-gold transition-colors">Work Visa</Link></li>
-              <li><Link to="/services/permanent-residency" className="text-sm hover:text-gold transition-colors">Permanent Residency</Link></li>
-              <li><Link to="/services/visitor-visa" className="text-sm hover:text-gold transition-colors">Visitor Visa</Link></li>
-              <li><Link to="/services/spouse-visa" className="text-sm hover:text-gold transition-colors">Spouse/Dependent Visa</Link></li>
-              <li><Link to="/services/ielts-pte" className="text-sm hover:text-gold transition-colors">IELTS/PTE Coaching</Link></li>
+              {[
+                { label: 'Study Visa', path: '/services/study-visa' },
+                { label: 'Work Visa', path: '/services/work-visa' },
+                { label: 'Permanent Residency', path: '/services/permanent-residency' },
+                { label: 'Visitor Visa', path: '/services/visitor-visa' },
+                { label: 'Spouse/Dependent Visa', path: '/services/spouse-visa' },
+                { label: 'IELTS/PTE Coaching', path: '/services/ielts-pte' },
+              ].map(({ label, path }) => (
+                <li key={label}>
+                  <Link to={path}
+                    className="text-sm text-slate-400 hover:text-white transition-colors flex items-center gap-1.5 group">
+                    <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 -ml-5 group-hover:ml-0 transition-all duration-200" style={{ color: '#A78BFA' }} />
+                    {label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Contact Info */}
+          {/* Contact */}
           <div>
-            <h3 className="text-white font-semibold text-lg mb-6 relative inline-block after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-12 after:h-1 after:bg-gold after:rounded-full">
+            <h3 className="text-white font-black text-base mb-5 flex items-center gap-2"
+              style={{ fontFamily: 'Outfit, sans-serif' }}>
+              <span className="w-5 h-0.5 rounded-full inline-block" style={{ backgroundColor: PURPLE }} />
               Contact Us
             </h3>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-gold shrink-0 mt-0.5" />
-                <span className="text-sm leading-relaxed">
-                  Near Bus Stand, Kaithal
-                  Kaithal-136027<br />
-                  Haryana<br />
-                  India
+                <div className="w-9 h-9 rounded-lg flex items-center justify-center mt-0.5 flex-shrink-0"
+                  style={{ backgroundColor: PURPLE }}>
+                  <MapPin className="w-4 h-4 text-white" />
+                </div>
+                <span className="text-sm text-slate-400 leading-relaxed">
+                  Near Bus Stand, Kaithal<br />Kaithal-136027, Haryana, India
                 </span>
               </li>
               <li className="flex items-start gap-3">
-                <Phone className="w-5 h-5 text-gold shrink-0 mt-1" />
+                <div className="w-9 h-9 rounded-lg flex items-center justify-center mt-0.5 flex-shrink-0"
+                  style={{ backgroundColor: PURPLE }}>
+                  <Phone className="w-4 h-4 text-white" />
+                </div>
                 <div className="flex flex-col gap-1">
-                  <a href="tel:+917495041916" className="text-sm hover:text-gold transition-colors">+91 74950 41916</a>
-                  <a href="tel:+918950987002" className="text-sm hover:text-gold transition-colors">+91 89509 87002</a>
-                  <a href="tel:+918222000285" className="text-sm hover:text-gold transition-colors">+91 82220 00285</a>
+                  {['+91 74950 41916', '+91 89509 87002', '+91 82220 00285'].map(n => (
+                    <a key={n} href={`tel:${n.replace(/\s/g, '')}`}
+                      className="text-sm text-slate-400 hover:text-white transition-colors">{n}</a>
+                  ))}
                 </div>
               </li>
               <li className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-gold shrink-0" />
-                <a href="mailto:futurepointconsultantcy@gmail.com" className="text-sm hover:text-gold transition-colors">futurepointconsultantcy@gmail.com</a>
+                <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+                  style={{ backgroundColor: PURPLE }}>
+                  <Mail className="w-4 h-4 text-white" />
+                </div>
+                <a href="mailto:futurepointconsultantcy@gmail.com"
+                  className="text-sm text-slate-400 hover:text-white transition-colors break-all">
+                  futurepointconsultantcy@gmail.com
+                </a>
               </li>
             </ul>
           </div>
-
         </div>
 
-        {/* Disclaimer & Copyright */}
-        <div className="pt-8 border-t border-slate-800 text-center text-xs text-slate-500">
-          <p className="mb-4 max-w-4xl mx-auto leading-relaxed">
-            <strong>Disclaimer:</strong> Future Point Immigration Consultancy provides guidance and assistance with visa applications. We do not guarantee visa approvals. Visa issuance is strictly subject to the rules, regulations, and final decisions of the respective government authorities and embassies.
+        {/* Bottom */}
+        <div className="pt-8 border-t space-y-4" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+          <p className="text-xs text-slate-500 max-w-4xl mx-auto text-center leading-relaxed">
+            <span className="text-slate-400 font-semibold">Disclaimer:</span> Future Point Immigration Consultancy provides guidance and assistance with visa applications. We do not guarantee visa approvals. Visa issuance is strictly subject to the rules, regulations, and final decisions of the respective government authorities and embassies.
           </p>
-          <div className="flex flex-col md:flex-row justify-center items-center gap-4">
-            <p>&copy; {new Date().getFullYear()} Future Point Consultancy. All rights reserved.</p>
-            <div className="hidden md:block w-1 h-1 bg-slate-700 rounded-full"></div>
-            <Link to="/privacy-policy" className="hover:text-gold transition-colors">Privacy Policy</Link>
+          <div className="flex flex-col md:flex-row justify-center items-center gap-4 text-xs text-slate-500">
+            <p>&copy; {year} Future Point Consultancy. All rights reserved.</p>
+            <div className="hidden md:block w-1 h-1 rounded-full bg-slate-700" />
+            <Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
           </div>
         </div>
       </div>

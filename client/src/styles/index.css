@@ -1,48 +1,243 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================
+   DESIGN TOKENS — Bold & Solid
+   ============================================ */
+:root {
+  --clr-primary:       #5B21B6;
+  --clr-primary-dark:  #4C1D95;
+  --clr-primary-light: #7C3AED;
+  --clr-accent:        #D97706;
+  --clr-accent-dark:   #B45309;
+  --bg-hero:           #0F172A;
+  --bg-dark:           #1E1B4B;
+  --clr-text:          #F8FAFC;
+  --clr-muted:         #94A3B8;
+  /* legacy alias — resolves to solid purple */
+  --gradient:          #5B21B6;
+  --clr-purple:        #5B21B6;
+}
+
+/* ============================================
+   BASE
+   ============================================ */
 @layer base {
-  html {
-    scroll-behavior: smooth;
-  }
+  html { scroll-behavior: smooth; }
+
   body {
-    @apply text-slate-700 bg-slate-50 antialiased font-sans;
+    font-family: 'Inter', sans-serif;
+    @apply text-slate-700 bg-white antialiased;
   }
+
   h1, h2, h3, h4, h5, h6 {
-    @apply text-slate-900 font-bold tracking-tight;
+    font-family: 'Outfit', sans-serif;
+    @apply font-bold tracking-tight;
   }
 
-  /* Dropdown option text: black on light, white on dark */
-  select option {
-    background-color: #ffffff;
-    color: #000000;
-  }
-
+  select option { background-color: #fff; color: #000; }
   @media (prefers-color-scheme: dark) {
-    select option {
-      background-color: #1e293b;
-      color: #ffffff;
-    }
+    select option { background-color: #1e293b; color: #fff; }
   }
 }
 
+/* ============================================
+   KEYFRAMES (motion only — no colour anim)
+   ============================================ */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes float-up {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 0.6; }
+  100% { transform: translateY(-130px) rotate(180deg); opacity: 0; }
+}
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes count-pop {
+  from { opacity: 0; transform: scale(0.85) translateY(10px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+/* ============================================
+   COMPONENTS
+   ============================================ */
 @layer components {
-  .container-custom {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+
+  /* Layout */
+  .container-custom { @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8; }
+
+  /* Solid brand text (no clip/transparent trick) */
+  .gradient-text {
+    color: #5B21B6;
   }
-  
+
+  /* Solid brand background */
+  .gradient-bg {
+    background-color: #5B21B6;
+  }
+
+  /* Dark surface card */
+  .glass-card {
+    background: rgba(15, 23, 42, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+  }
+
+  /* Light card */
+  .glass-card-light {
+    background: #ffffff;
+    border: 1px solid #E2E8F0;
+    border-radius: 1.25rem;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  /* ---- Buttons ---- */
+
+  /* Primary solid purple — used everywhere as main CTA */
+  .btn-gradient {
+    @apply inline-flex items-center justify-center gap-2 px-7 py-3.5 text-base font-bold text-white rounded-xl transition-all duration-200 active:scale-95 cursor-pointer;
+    font-family: 'Outfit', sans-serif;
+    background-color: #5B21B6;
+    box-shadow: 0 4px 16px rgba(91, 33, 182, 0.35);
+  }
+  .btn-gradient:hover {
+    background-color: #4C1D95;
+    box-shadow: 0 6px 24px rgba(91, 33, 182, 0.5);
+    transform: translateY(-2px);
+  }
+
+  /* Outlined white — used on dark sections */
+  .btn-glass {
+    @apply inline-flex items-center justify-center gap-2 px-7 py-3.5 text-base font-bold rounded-xl transition-all duration-200 active:scale-95 cursor-pointer;
+    font-family: 'Outfit', sans-serif;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+  }
+  .btn-glass:hover {
+    background-color: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.55);
+    transform: translateY(-2px);
+  }
+
+  /* Standard solid primary */
   .btn-primary {
-    @apply inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-700 hover:bg-primary-800 transition-colors duration-300 shadow-sm hover:shadow active:scale-95;
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-bold text-white rounded-xl transition-all duration-200 active:scale-95 shadow-md hover:shadow-lg cursor-pointer;
+    font-family: 'Outfit', sans-serif;
+    background-color: #5B21B6;
   }
-  
+  .btn-primary:hover {
+    background-color: #4C1D95;
+    transform: translateY(-1px);
+  }
+
+  /* Outline */
   .btn-outline {
-    @apply inline-flex items-center justify-center px-6 py-3 border-2 border-primary-700 text-base font-medium rounded-md text-primary-700 bg-transparent hover:bg-primary-50 transition-colors duration-300 active:scale-95;
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-bold rounded-xl transition-all duration-200 active:scale-95 cursor-pointer;
+    font-family: 'Outfit', sans-serif;
+    border: 2.5px solid #5B21B6;
+    color: #5B21B6;
+    background-color: transparent;
   }
-  
+  .btn-outline:hover {
+    background-color: #5B21B6;
+    color: white;
+    transform: translateY(-1px);
+  }
+
+  /* Amber accent */
   .btn-accent {
-    @apply inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-primary-950 bg-gold hover:bg-gold-dark transition-colors duration-300 shadow-sm hover:shadow active:scale-95;
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-bold rounded-xl transition-all duration-200 active:scale-95 cursor-pointer;
+    font-family: 'Outfit', sans-serif;
+    background-color: #D97706;
+    color: #1E1B4B;
+    box-shadow: 0 4px 16px rgba(217, 119, 6, 0.35);
   }
+  .btn-accent:hover {
+    background-color: #B45309;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 24px rgba(217, 119, 6, 0.45);
+  }
+
+  /* ---- Pill Labels ---- */
+  .pill-label {
+    @apply inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-bold;
+    font-family: 'Outfit', sans-serif;
+    background-color: rgba(91, 33, 182, 0.1);
+    border: 1.5px solid rgba(91, 33, 182, 0.3);
+    color: #5B21B6;
+  }
+  .pill-label-dark {
+    @apply inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-bold;
+    font-family: 'Outfit', sans-serif;
+    background-color: rgba(255, 255, 255, 0.12);
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    color: #E2E8F0;
+  }
+
+  /* ---- Dark hero section ---- */
+  .page-hero-dark {
+    background-color: #0F172A;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ---- Glow orbs (subtle depth, solid colour) ---- */
+  .glow-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    pointer-events: none;
+    opacity: 0.45;
+  }
+
+  /* ---- Floating particles ---- */
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    background-color: #7C3AED;
+    animation: float-up linear infinite;
+    pointer-events: none;
+  }
+
+  /* ---- Marquee ---- */
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 30s linear infinite;
+  }
+  .marquee-track:hover { animation-play-state: paused; }
+
+  /* ---- Solid icon box ---- */
+  .icon-box {
+    @apply w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0;
+    background-color: #5B21B6;
+  }
+
+  /* ---- Shimmer skeleton ---- */
+  .shimmer {
+    background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  /* ---- Animation utilities ---- */
+  .animate-fade-up    { animation: fade-in-up 0.7s ease both; }
+  .animate-slide-down { animation: slide-down 0.3s ease both; }
+  .animate-count-pop  { animation: count-pop 0.5s ease both; }
+
 }
